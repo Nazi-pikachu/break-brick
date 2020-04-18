@@ -18,7 +18,6 @@ console.log(GAME_WIDTH, GAME_HEIGHT);
 
 
 
-
 //Requesting user to play in landscape
 //if (this.GAME_HEIGHT > this.GAME_WIDTH || user_input != 'enter' || user_input != 'Enter' || user_input != 'ENTER')
 // alert("PLEASE USE LANSDSCAPE MODE");
@@ -52,19 +51,30 @@ class paddle {             //this for this class to be able to acess in other fi
 
     }
     update() {
+        if (this.x < 0)
+            this.x = 0;
+        if (this.x + this.width > this.gameWidth)
+            this.x = this.gameWidth - this.width;
 
         this.draw();
-
-        // if (this.x this.gameWidth || this.x < 0)
 
     }
     controls(keyCode) {
         switch (keyCode) {
-            case 39: {
+            case (68): {
                 this.x += this.dx;
                 break;
             }
-            case 37: {
+            case (65): {
+                this.x -= this.dx;
+                break;
+            }
+
+            case (39): {
+                this.x += this.dx;
+                break;
+            }
+            case (37): {
                 this.x -= this.dx;
                 break;
             }
