@@ -1,6 +1,6 @@
 #gameScreen{
-    border: 1px solid black;
-    background-color: rgb(212, 206, 206);
+    border: 10px solid black;
+    background-color:rgb(157, 255, 255);
     /*margin: 200,200,200,200;
 */
 }
