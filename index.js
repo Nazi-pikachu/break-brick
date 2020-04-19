@@ -12,18 +12,54 @@ document.addEventListener('resize', function (event) {
 
 
 //for responsive game Width
-canvas.width = .95 * window.innerWidth;
-canvas.height = .95 * window.innerHeight;
+canvas.width = .96 * window.innerWidth;
+canvas.height = .96 * window.innerHeight;
 var GAME_WIDTH = canvas.width;
 var GAME_HEIGHT = canvas.height;
-var dx = 10, dy = 1, dv = .2;
+var dx = 10, dy = 1, dvx = 2, dvy = -2;
+console.log(GAME_HEIGHT, GAME_WIDTH);
+
+/*var brickRowCount = 3;
+var brickColumnCount = 5;
+var brickWidth = GAME_WIDTH / 5;
+var brickHeight = GAME_HEIGHT / 3;
+var brickPadding = 10;
+var brickOffsetTop = 30;
+var brickOffsetLeft = 30;
+
+var bricks = [];
+for (var cl = 0; cl < brickColumnCount; c++) {
+    bricks[cl] = [];
+    for (var r = 0; r < brickRowCount; r++) {
+        bricks[cl][r] = { x: 0, y: 0 };
+    }
+}
+
+function drawBricks(c) {
+    for (var cl = 0; cl < brickColumnCount; c++) {
+        for (var r = 0; r < brickRowCount; r++) {
+            var brickX = (cl * (brickWidth + brickPadding)) + brickOffsetLeft;
+            var brickY = (r * (brickHeight + brickPadding)) + brickOffsetTop;
+            bricks[cl][r].x = brickX;
+            bricks[cl][r].y = brickY;
+            c.beginPath();
+            c.rect(0, 0, brickWidth, brickHeight);
+            c.fillStyle = "#0095DD";
+            c.fill();
+            c.closePath();
+        }
+    }
+}
+drawBricks(c);
+*/
+
 console.log(GAME_WIDTH, GAME_HEIGHT);
 
 
 
 //Requesting user to play in landscape
 
-//if (this.GAME_HEIGHT > this.GAME_WIDTH || user_input != 'enter' || user_input != 'Enter' || user_input != 'ENTER')
+//if (this.GAME_HEIGHT > this.GAME_WIDTH || user_input != 'enter' || user_input != 'Enter' || user_input != 'ENTER') {
 //  alert("PLEASE USE LANSDSCAPE MODE");
 //var user_input = prompt("If you wish to continue in Potrait write enter");
 
@@ -47,15 +83,31 @@ class paddle {             //this for this class to be able to acess in other fi
         this.dy = dy;
         this.ballx = gameWidth / 2 - 0.3 * this.width / 2;      //initial coordinates of ball
         this.bally = gameHeight / 2 - 0.3 * this.width / 2;
-        this.dv = dv;//velocity of ball
+        this.dvx = dvx;//velocity of ball
+        this.dvy = dvy;
+        this.r = 0.09 * this.width;
+        this.nCr = this.height / 2;
+        this.Px = this.x + this.nCr;
+        this.Py = this.y + this.nCr;
+        this.dbtw = this.r + this.nCr;
     }
     // to draw the paddle
-    draw() {
-
+    drawPaddle() {
+        c.fillStyle = "orange";
         c.fillRect(this.x, this.y, this.width, this.height);
-        c.fillStyle = "#696980";
-        let img = document.getElementById("img");
-        c.drawImage(img, this.ballx, this.bally, 0.3 * this.width, 0.3 * this.width);
+        c.fill();
+        c.closePath();
+
+    }
+
+    //to draw Ball
+    drawBall() {
+        c.beginPath();
+        c.arc(this.ballx, this.bally, this.r, 0, 2 * Math.PI, false);
+        c.fillStyle = 'yellow';
+        c.fill();
+        c.strokeStyle = 'red';
+        c.stroke();
 
     }
     //to update the paddle in each frame
@@ -65,21 +117,19 @@ class paddle {             //this for this class to be able to acess in other fi
         if (this.x + this.width > this.gameWidth)
             this.x = this.gameWidth - this.width;
         //console.log(this.ballx, this.ga;
-        if (this.ballx + 0.35 * this.width > this.gameWidth)
-            this.dv = -this.dv;
+        if (this.ballx + this.r > this.gameWidth || this.ballx < this.r)
+            this.dvx = -this.dvx;
 
-        this.ballx += this.dv;
-        this.bally += this.dv;
+        if (this.bally + this.r > this.gameHeight || this.bally < this.r)
+            this.dvy = -this.dvy;
 
+        this.ballx += this.dvx;
+        this.bally += this.dvy
 
-
-
-
-
-
-
-
-        this.draw();
+        this.collision();
+        this.drawPaddle();
+        this.drawBall();
+        //  console.log(this.x, this.y)
 
     }
     //user controls the paddle
@@ -106,10 +156,26 @@ class paddle {             //this for this class to be able to acess in other fi
         }
     }
 
+    collision() {
+        if (this.bally + this.r > this.y + this.height / 2) {
+            this.ballx = this.gameWidth / 2 - 0.3 * this.width / 2;      //initial coordinates of ball
+            this.bally = this.gameHeight / 2 - 0.3 * this.width / 2;
+            alert("Sorry Game Over!!!\nTry Again")
+        }
+
+        //nCr==radius of the Nth circle
+
+
+    }
+    
+    //dis = Math.sqrt(Math.pow((this.ballx - this.Px), 2) + Math.pow(this.bally - this.Py), 2);
+    //console.log(dis);
+
+
 }
 //creating instance of paddle
 let paddle_demo = new paddle(GAME_WIDTH, GAME_HEIGHT);
-paddle_demo.draw();
+//paddle_demo.draw();
 
 animate = () => {
 
