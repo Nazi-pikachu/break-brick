@@ -16,7 +16,7 @@ canvas.width = .96 * window.innerWidth;
 canvas.height = .96 * window.innerHeight;
 var GAME_WIDTH = canvas.width;
 var GAME_HEIGHT = canvas.height;
-var dx = 10, dy = 1, dvx = 2, dvy = -2;
+var dx = 10, dy = 1, dvx = 2, dvy = 5;
 console.log(GAME_HEIGHT, GAME_WIDTH);
 
 /*var brickRowCount = 3;
@@ -53,7 +53,6 @@ function drawBricks(c) {
 drawBricks(c);
 */
 
-console.log(GAME_WIDTH, GAME_HEIGHT);
 
 
 
@@ -70,26 +69,29 @@ document.addEventListener('keydown', function (event) {
 }
 )
 
+//console.log(this.ballx - this.Px);
 
 class paddle {             //this for this class to be able to acess in other files
     constructor(gameWidth, gameHeight) {
-        this.gameWidth = gameWidth;         //width of gaming console
-        this.gameHeight = gameHeight;       //height of gaming console
-        this.width = 0.2 * gameWidth;       //Width of paddle
-        this.height = 0.035 * gameHeight;   //Height of the paddle
-        this.x = gameWidth / 2 - this.width / 2;//initial x coordinate of paddle
-        this.y = gameHeight - 2 * this.height;//initial y coordinate of paddle
-        this.dx = this.width / 8;//x velocity of paddle
+        this.gameWidth = gameWidth;                    //width of gaming console
+        this.gameHeight = gameHeight;                  //height of gaming console
+        this.width = 0.2 * gameWidth;                  //Width of paddle
+        this.height = 0.035 * gameHeight;              //Height of the paddle
+        this.x = gameWidth / 2 - this.width / 2;       //initial x coordinate of paddle
+        this.y = gameHeight - 2 * this.height;         //initial y coordinate of paddle
+        this.dx = this.width / 8;                      //x velocity of paddle
         this.dy = dy;
-        this.ballx = gameWidth / 2 - 0.3 * this.width / 2;      //initial coordinates of ball
-        this.bally = gameHeight / 2 - 0.3 * this.width / 2;
+        this.ballx = 0.1 * this.gameWidth;//gameWidth / 2 - 0.3 * this.width / 2;      //initial coordinates of ball
+        this.bally = 0.1 * this.gameHeight;//gameHeight / 2 - 0.3 * this.width / 2;
         this.dvx = dvx;//velocity of ball
         this.dvy = dvy;
         this.r = 0.09 * this.width;
-        this.nCr = this.height / 2;
-        this.Px = this.x + this.nCr;
-        this.Py = this.y + this.nCr;
-        this.dbtw = this.r + this.nCr;
+        //this.nCr = this.height / 2;
+        //this.Px = this.x + this.nCr;
+        // this.Py = this.y + this.nCr;
+        /// this.dbtw = this.r + this.nCr;
+        ///this.dis = Math.sqrt(Math.pow((this.ballx - this.Px), 2) + Math.pow((this.bally - this.Py), 2));
+        //console.log(this.ballx);
     }
     // to draw the paddle
     drawPaddle() {
@@ -97,6 +99,17 @@ class paddle {             //this for this class to be able to acess in other fi
         c.fillRect(this.x, this.y, this.width, this.height);
         c.fill();
         c.closePath();
+
+
+
+
+        c.beginPath();
+        c.moveTo(0, this.y);
+        c.lineTo(GAME_WIDTH, this.y);
+        c.strokeStyle = 'black';
+        c.stroke();
+        c.closePath();
+        // console.log(GAME_WIDTH, GAME_HEIGHT);
 
     }
 
@@ -126,30 +139,47 @@ class paddle {             //this for this class to be able to acess in other fi
         this.ballx += this.dvx;
         this.bally += this.dvy
 
+        // console.log(this.dis);
+
+
         this.collision();
         this.drawPaddle();
         this.drawBall();
-        //  console.log(this.x, this.y)
+        // console.log(this.Px, this.Py)
 
     }
+
+
     //user controls the paddle
     controls(keyCode) {
         switch (keyCode) {
             case (68): {
                 this.x += this.dx;
+                // this.Px = this.x + this.nCr;
+                //this.dis = Math.sqrt(Math.pow((this.ballx - this.Px), 2) + Math.pow((this.bally - this.Py), 2));
+
                 break;
             }
             case (65): {
                 this.x -= this.dx;
+                //this.Px = this.x + this.nCr;
+                // this.dis = Math.sqrt(Math.pow((this.ballx - this.Px), 2) + Math.pow((this.bally - this.Py), 2));
+
                 break;
             }
 
             case (39): {
                 this.x += this.dx;
+                // this.Px = this.x + this.nCr;
+                //this.dis = Math.sqrt(Math.pow((this.ballx - this.Px), 2) + Math.pow((this.bally - this.Py), 2));
+
                 break;
             }
             case (37): {
                 this.x -= this.dx;
+                // this.Px = this.x + this.nCr;
+                //this.dis = Math.sqrt(Math.pow((this.ballx - this.Px), 2) + Math.pow((this.bally - this.Py), 2));
+
                 break;
             }
 
@@ -157,22 +187,26 @@ class paddle {             //this for this class to be able to acess in other fi
     }
 
     collision() {
-        if (this.bally + this.r > this.y + this.height / 2) {
+        if (this.bally + this.r > this.y + this.height) {
             this.ballx = this.gameWidth / 2 - 0.3 * this.width / 2;      //initial coordinates of ball
             this.bally = this.gameHeight / 2 - 0.3 * this.width / 2;
             alert("Sorry Game Over!!!\nTry Again")
+            location.reload(true);
         }
 
-        //nCr==radius of the Nth circle
+        if ((this.bally + this.r > this.y) && (this.ballx + this.r > this.x && this.ballx - this.r < this.x + this.width))
+            this.dvy = -this.dvy;
+
 
 
     }
-    
-    //dis = Math.sqrt(Math.pow((this.ballx - this.Px), 2) + Math.pow(this.bally - this.Py), 2);
-    //console.log(dis);
+
 
 
 }
+
+
+
 //creating instance of paddle
 let paddle_demo = new paddle(GAME_WIDTH, GAME_HEIGHT);
 //paddle_demo.draw();
