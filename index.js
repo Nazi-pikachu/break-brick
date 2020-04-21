@@ -16,7 +16,7 @@ canvas.width = .96 * window.innerWidth;
 canvas.height = .96 * window.innerHeight;
 var GAME_WIDTH = canvas.width;
 var GAME_HEIGHT = canvas.height;
-var dx = 10, dy = 1, dvx = 2, dvy = 5;
+var dx = 15, dy = 1, dvx = 5, dvy = 5;
 console.log(GAME_HEIGHT, GAME_WIDTH);
 
 /*var brickRowCount = 3;
