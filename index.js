@@ -56,22 +56,23 @@ drawBricks(c);
 
 
 
-//Requesting user to play in landscape
+/*Requesting user to play in landscape
+if (this.GAME_HEIGHT > this.GAME_WIDTH) {//alert("PLEASE USE LANSDSCAPE MODE");
+    //var user_input = prompt("If you wish to continue in Potrait write enter");
+    document.addEventListener('touchstart', function (event) {
 
-//if (this.GAME_HEIGHT > this.GAME_WIDTH || user_input != 'enter' || user_input != 'Enter' || user_input != 'ENTER') {
-//  alert("PLEASE USE LANSDSCAPE MODE");
-//var user_input = prompt("If you wish to continue in Potrait write enter");
 
+    })
+}
+*/
 document.addEventListener('keydown', function (event) {
     paddle_demo.controls(event.keyCode);
     //console.log(event.keyCode, event.key);
-
 }
 )
 
 //console.log(this.ballx - this.Px);
-
-class paddle {             //this for this class to be able to acess in other files
+class paddle {   //this for this class to be able to acess in other files
     constructor(gameWidth, gameHeight) {
         this.gameWidth = gameWidth;                    //width of gaming console
         this.gameHeight = gameHeight;                  //height of gaming console
@@ -154,6 +155,7 @@ class paddle {             //this for this class to be able to acess in other fi
     controls(keyCode) {
         switch (keyCode) {
             case (68): {
+                this.dx++;
                 this.x += this.dx;
                 // this.Px = this.x + this.nCr;
                 //this.dis = Math.sqrt(Math.pow((this.ballx - this.Px), 2) + Math.pow((this.bally - this.Py), 2));
@@ -161,6 +163,7 @@ class paddle {             //this for this class to be able to acess in other fi
                 break;
             }
             case (65): {
+                this.dx++;
                 this.x -= this.dx;
                 //this.Px = this.x + this.nCr;
                 // this.dis = Math.sqrt(Math.pow((this.ballx - this.Px), 2) + Math.pow((this.bally - this.Py), 2));
